@@ -7,7 +7,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -33,7 +32,9 @@ public class AlarmActivity extends AppCompatActivity {
         binding = ActivityAlarmBinding.inflate(getLayoutInflater());
         
         setContentView(binding.getRoot());
+
         createNotificationChannel();
+
         binding.selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,14 +44,14 @@ public class AlarmActivity extends AppCompatActivity {
                         .setMinute(0)
                         .setTitleText("Select Alarm Time")
                         .build();
-                timePicker.show(getSupportFragmentManager(), "felipecostadev");
+
+                timePicker.show(getSupportFragmentManager(), "app-notify");
+
                 timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (timePicker.getHour() > 12){
-                            binding.selectTime.setText(
-                                    String.format("%02d",(timePicker.getHour()-12)) +":"+ String.format("%02d", timePicker.getMinute())+"PM"
-                            );
+                            binding.selectTime.setText(String.format("%02d",(timePicker.getHour()-12)) +":"+ String.format("%02d", timePicker.getMinute())+"PM");
                         } else  {
                             binding.selectTime.setText(timePicker.getHour()+":" + timePicker.getMinute()+ "AM");
                         }
@@ -67,9 +68,13 @@ public class AlarmActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
                 Intent intent = new Intent(AlarmActivity.this, AlarmReceiver.class);
+
                 pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
                 alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
                 Toast.makeText(AlarmActivity.this, "Alarme Definido", Toast.LENGTH_SHORT).show();
             }
         });
@@ -77,25 +82,28 @@ public class AlarmActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AlarmActivity.this, AlarmReceiver.class);
+
                 pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-                if (alarmManager == null){
+
+                if (alarmManager == null)
                     alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                }
+
                 alarmManager.cancel(pendingIntent);
+
                 Toast.makeText(AlarmActivity.this, "Alarme Desativado", Toast.LENGTH_SHORT).show();
             }
         });
     }
     
-    private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            CharSequence name = "akchannel";
-            String desc = "Channel for Alarm Manager";
-            int imp = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("felipecostadev", name, imp);
-            channel.setDescription(desc);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+    private void createNotificationChannel() {
+        CharSequence name = "AlarmReminderChannel";
+
+        String description = "Channel for Alarm System";
+
+        NotificationChannel notificationChannel = new NotificationChannel("app-notify", name, NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.setDescription(description);
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(notificationChannel);
     }
 }
