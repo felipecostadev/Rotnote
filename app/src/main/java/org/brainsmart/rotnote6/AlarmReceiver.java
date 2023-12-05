@@ -19,7 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "androidknowledge")
                 .setSmallIcon(R.drawable.baseline_notifications_24)
                 .setContentTitle("Lembrete:")
-                .setContentText("É hora de acordar")
+                .setContentText("")
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
