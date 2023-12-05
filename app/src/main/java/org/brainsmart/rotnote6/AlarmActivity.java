@@ -43,7 +43,7 @@ public class AlarmActivity extends AppCompatActivity {
                         .setMinute(0)
                         .setTitleText("Select Alarm Time")
                         .build();
-                timePicker.show(getSupportFragmentManager(), "androidknowledge");
+                timePicker.show(getSupportFragmentManager(), "felipecostadev");
                 timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -92,7 +92,7 @@ public class AlarmActivity extends AppCompatActivity {
             CharSequence name = "akchannel";
             String desc = "Channel for Alarm Manager";
             int imp = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("androidknowledge", name, imp);
+            NotificationChannel channel = new NotificationChannel("felipecostadev", name, imp);
             channel.setDescription(desc);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
